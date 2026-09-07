@@ -1,0 +1,129 @@
+# ---------------------------------------------------------------------------
+# Patient data and anything derived from it. NEVER commit.
+# ---------------------------------------------------------------------------
+*.dcm
+*.mhd
+*.raw
+*.nii
+*.nii.gz
+*.nrrd
+*.npz
+*.npy
+input/LIDC-IDRI*/
+input/manifest*/
+input/subset*/
+input/annotations.csv
+input/preprocessed/
+# Patient-level split manifests: they enumerate LIDC-IDRI subject identifiers,
+# including the locked-test membership. Maintained locally, never published.
+# Verify a local copy with scripts/verify_private_split.py.
+/input/splits/
+data/
+raw/
+
+# Source annotation XML (LIDC corpus) — read from outside the repository
+*.xml
+LIDC-XML*/
+
+# Rendered or cropped patient imagery
+output/gradcam/
+*.png
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+
+# ---------------------------------------------------------------------------
+# Pilot outputs: reviewer manifests, private mappings, labels, review records
+# ---------------------------------------------------------------------------
+manifests/
+# Private pilot mappings are emitted with a PRIVATE_ prefix. Anchored to the start of
+# the basename so it cannot swallow source files that merely contain the word.
+PRIVATE_*
+labels__*.jsonl
+reviewers.json
+review/
+logs/
+demo-synthetic/
+*-pilot-out/
+threshold_*
+*_precision*
+*_wilson*
+
+# ---------------------------------------------------------------------------
+# Model artefacts
+# ---------------------------------------------------------------------------
+*.pth
+*.pt
+*.ckpt
+*.onnx
+*.safetensors
+models/
+checkpoints/
+
+# ---------------------------------------------------------------------------
+# Private research material — must never enter this repository
+# ---------------------------------------------------------------------------
+*-vault/
+*-research-cache/
+literature/
+scratchpad/
+
+# Markdown allowlist, enforced mechanically: the ONLY Markdown permitted at the
+# repository root is README.md. This blocks local agent/assistant instruction files
+# and internal notes without naming any vendor. Documentation lives under docs/.
+/*.md
+!/README.md
+
+# All top-level dotfiles and dot-directories are excluded by default — local tool
+# state, editor config and assistant working directories included — then the two we
+# genuinely publish are added back.
+/.*
+!/.gitignore
+!/.github/
+
+# ---------------------------------------------------------------------------
+# Secrets, environments, machine-specific artefacts
+# ---------------------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+*.p12
+credentials*
+secrets*
+.venv/
+venv/
+env/
+.python-version
+
+# ---------------------------------------------------------------------------
+# Git artefacts belonging to the previous repository
+# ---------------------------------------------------------------------------
+*.bundle
+*.patch
+*.orig
+*.rej
+
+# ---------------------------------------------------------------------------
+# Caches, build output, editor and OS noise
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.log

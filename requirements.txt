@@ -1,0 +1,13 @@
+# Direct dependencies of the code in this repository.
+#
+# The test suite (`python tests/run_tests.py`) needs only numpy and matplotlib; it uses a
+# minimal stdlib shim for the pytest API, so nothing else is required to run the 62 tests.
+# `pylidc` is used ONLY by scripts/build_pilot_manifest.py, and only to read DICOM series
+# metadata (pixel spacing, slice thickness, patient id) — never to parse annotations and
+# never to supply a label. It pulls its own transitive dependencies.
+
+numpy>=1.26
+matplotlib>=3.8
+
+pylidc>=0.2.3          # DICOM series metadata only; see src/pilot/xml_extract.py header
+setuptools<81          # pylidc is unmaintained and imports pkg_resources, removed in setuptools>=81
