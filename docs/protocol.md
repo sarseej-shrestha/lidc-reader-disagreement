@@ -1,9 +1,10 @@
 # Study Protocol
 
-**Status:** `0.2.1-draft` — a **timestamped pre-pilot design snapshot**, 2026-09-04.
+**Status:** `0.2.2-draft` — **pre-pilot readiness; procedural amendment**, 2026-09-21.
 **This is not the Milestone 1 freeze.** No locked-test evaluation may occur under a draft protocol.
 
-Three separate gates remain open, and none of them is closed by this version:
+Three gates govern the freeze. The documentation gate has passed; the association and
+preprocessing gates remain open. This procedural amendment closes neither scientific gate:
 
 | Gate | What it closes | State |
 |---|---|---|
@@ -22,6 +23,11 @@ or process, no threshold performance has been computed, no threshold has been se
 §4.6.4 census veto — was **frozen before the first label was created**.
 
 Label semantics are defined in [`label_schema.md`](label_schema.md).
+
+`0.2.2-draft` clarifies the authorization sequence in §15.B and the archival history below.
+It changes no label definition, association formula, grid, sampling rule, precision criterion,
+census veto, outcome, analysis, partition, field of view, or model plan. Gate 2A has **not**
+been authorized. Synthetic validation and CI do not constitute human implementation review.
 
 ---
 
@@ -1190,6 +1196,15 @@ good.
 
 ### A. Documentation gate — **PASS**
 
+**Readiness amendment audit (`0.2.2-draft`, 2026-09-21).** The deterministic 10-word
+phrase-overlap comparison was rerun over the complete README, protocol, and label schema
+against all **17 cited sources**, with all 24 extracted-text hashes reverified. The **28**
+matching runs are unchanged from the clean-root snapshot: **zero new matches** were introduced.
+Their dispositions are retained in the private audit record. This comparison is limited to
+exact prose overlap against those sources; it is **not plagiarism clearance**, does not
+detect all paraphrase, and does **not audit source code**. The bibliography verification
+below remains the recorded `0.2.1-draft` review; no new scientific source is cited here.
+
 Every source cited in this document has been verified at **full text** or is **authoritative
 primary documentation**. An abstract alone is not accepted, and no public claim rests on one.
 `0.2.1-draft` cites no new source.
@@ -1230,21 +1245,83 @@ appeared in a public document, and no experiment has been interpreted using eith
 
 ### B. Gate 2 — association freeze (OPEN)
 
-1. Execute the §4.6 pilot on the frozen 600-pair reference set, plus the 4-pair census.
-2. Pass the §4.7 100-candidate cluster audit with zero confirmed false merges.
-3. Record the selected setting and the sensitivity analysis in a `0.3.0` revision.
+The sequence is **2A → 2B → 2C → 2D**. Gate 2A authorizes reference labelling; 2B produces
+the labels; 2C consumes those labels; 2D validates the selected association rule and freezes it.
+**Candidate-dataset generation remains prohibited until Gate 2D passes.** The audit clusters
+specified in §4.7 are limited to that audit; they do not constitute a candidate dataset or
+authorize benchmark construction before the association freeze.
 
-Until all three are done, **no association threshold is frozen** and no candidate dataset may be
-built.
+#### Gate 2A — authorization to begin reference review (OPEN)
+
+Before the author records authorization in the private decision record, all of the following
+must be verified:
+
+- Human implementation review is complete for every component that will expose or store real
+  cases, including the real-volume provider and its integration with the review interface.
+- The isolated environment, complete synthetic tests, and synthetic interface smoke test pass.
+- Source-corpus identity and the declared reconciliation checks have been reverified.
+- The private primary, repeat, and radius-expanded census manifest hashes have been reverified;
+  the independent-review manifest is checked if that round is used.
+- Reviewer governance remains frozen as in §4.6.6, including roles, blinding, repeat-review
+  requirements, and the independent reviewer's inability to adjudicate primary labels.
+- The review storage location is confirmed private and outside the repository.
+- The frozen split and development-only admission checks pass: no locked-test patient is
+  admitted to reference review.
+- No real reference label has been created before this authorization.
+
+Passing machine checks alone does not close Gate 2A. **Only the author's recorded Gate 2A
+authorization permits real-case reference labelling to begin.**
+
+#### Gate 2B — reference review execution (NOT STARTED)
+
+After Gate 2A, execute the **600 primary pair reviews**, the **four-pair radius-expanded
+census**, and the frozen **120-item repeat subset**, with the minimum seven-day washout and
+agreement requirements of §4.6.6. Apply the indeterminate-label, rubric-revision, and
+class-count-shortfall procedures in §4.6.3 exactly as frozen. Run the predeclared independent
+review if available; its absence remains a stated limitation, not a new hard blocker.
+Governance and adjudication remain unchanged: independent answers do not replace or adjudicate
+the primary reference, repeat answers do not overwrite primary answers, and storage is
+append-only. No automated source may suggest, prefill, explain, or change a reference label.
+
+**Reference labelling is permitted after Gate 2A and is required to complete Gate 2B.**
+Threshold performance is not inspected until the applicable reference-review requirements
+and pre-scoring checks have passed.
+
+#### Gate 2C — association-setting selection (NOT STARTED)
+
+Consume the Gate 2B labels under the unchanged §4.7 procedure: enforce the §4.4 structural
+veto, observed precision **≥0.990**, the **95% Wilson precision lower bound ≥0.950**, the
+**150 predicted-positive** floor, and patient independence (including §4.7's stated
+interval procedure if independence is violated). Rank eligible settings by highest recall,
+then highest precision lower bound, then smaller `τ_floor`, then smaller `α`.
+Apply the §4.6.4 radius-expanded census veto after ranking and before the cluster audit:
+**one confirmed census false merge rejects the setting**. Census pairs remain outside the
+primary precision, Wilson, and recall calculations. If all settings fail, report failure
+and revise the formulation in a new protocol version; **no threshold or criterion is relaxed
+within this analysis**.
+
+#### Gate 2D — cluster audit and protocol freeze (NOT STARTED)
+
+Validate the highest-ranked surviving setting with the **100-candidate audit** under §4.7's
+unchanged sampling and pre-reveal identity-freezing rules. Require **zero confirmed false
+merges**. A confirmed false merge rejects that setting and sends the next eligible setting
+to audit. An insufficient audit population requires a halt and amendment; patients from the
+pair reference are not silently reused. If no setting passes, report failure and revise the
+formulation in a new protocol version without relaxing the criteria.
+
+Record the passing setting, audit outcome, and prescribed sensitivity-analysis plan in
+protocol **`0.3.0`**. The later sensitivity results remain subject to their downstream gates.
+**Only after Gate 2D passes and the association rule is frozen may benchmark candidate
+construction begin.** Gate 3 and the training preconditions remain separate and open.
 
 **Done at `0.2.1-draft`, before any label exists:** manifests generated, blinded and hashed;
 joint feasibility proven at 600/600; all 10 radius-expanded-only pairs placed; the repeat,
 independent and census rounds built; 20 shuffled-input rebuilds byte-identical across all five
 artifacts; blinding audit passing on all four reviewer-facing manifests.
 
-**Not done, and not permitted before the items above:** creating any reference label, opening
-the review interface on real cases for labelling, computing any threshold performance,
-selecting a threshold, or running the cluster audit. **Zero reference labels exist.**
+**Current state:** Gate 2A remains open. No real-case reference review, reference labelling,
+threshold-performance calculation, setting selection, or cluster audit has begun.
+**Zero reference labels exist.** The readiness amendment authorizes none of these activities.
 
 ### C. Gate 3 — preprocessing / field-of-view freeze (OPEN)
 
@@ -1308,9 +1385,18 @@ narrow:
 
 ## Amendments
 
+**Archival predecessor references.** Commit IDs predating the clean migration, including
+`6bd0f6b`, identify predecessor history; they are **not Git objects in this canonical public
+repository**. The canonical clean repository began with the consolidated September 7 snapshot,
+whose current root is `98d336960ba7a5989471424e970870c616913ac5`. Earlier materials and hashes
+are retained in the private provenance record and archive. An archival identifier is not
+independently verifiable from this repository, and no claim of public preregistration relies
+solely on an unreachable predecessor commit. The predecessor history is not republished here.
+
 | Version | Date | Change |
 |---|---|---|
+| `0.2.2-draft` | 2026-09-21 | Procedural readiness amendment only: separated Gate 2A authorization, 2B reference review, 2C setting selection, and 2D cluster audit and association freeze; removed the circular prohibition on labels needed to complete the pilot; clarified predecessor commit IDs as private archival references outside the clean public history. Scientific definitions and all selection, sampling, statistical, partition, preprocessing, and model specifications are unchanged. Gate 2A remains open; zero reference labels exist. |
 | `0.2.1-draft` | 2026-09-04 | **Scopes.** Stated the two counting scopes explicitly and side by side (§3.2): corpus/parser reconciliation over **all 1,018 CT series and all 41,759 marks**, and primary analysis over **1,017 series and 41,675 marks** with LIDC-IDRI-0566 and its 84 marks removed. The eight-session exclusion is recorded as an **analysis decision, not a parser rule**; corpus counts are not replaced by primary counts anywhere. **Near-miss enrichment.** Rejected the `0.2.0-draft` manifest, in which only **144 of 600 pairs (24%)** fell in the intended band, because near-miss was a 2× within-patient weight rather than a quota. Defined near-miss exactly as `2.0 mm <= d <= 10.0 mm` and required **exactly 300 of 600**, allocated proportionally as **120 point-point / 90 point-contour / 90 contour-contour** (§4.6.3). Reformulated sampling as a **single joint capacity-constrained matching over six pair-type × band cells**, solved by integral max flow and **proven feasible before regeneration** (600/600); strata are never drawn independently and repaired, and infeasibility stops generation with maximum achievable flow, binding cells, patient conflicts and the nearest feasible allocation. Removed the redundant within-patient near-miss weight. Amended **before any label existed**, so no outcome could have informed it. **Radius-expanded-only pairs** (§4.6.4): defined exactly as `r_i + r_j > 12` and `12 < d <= r_i + r_j`; established that the 10 come from only **6 distinct patients**, so **6 is the maximum any one-pair-per-patient manifest can hold**; pinned those 6 into the matching itself; sent the other **4** to a separate blinded `radius_expanded_census` manifest, deduplicated, with a fail-closed coverage audit proving each of the 10 is reviewed exactly once. Census results are kept out of the primary Wilson calculation and reported for all 15 settings. **Ratified and froze the census veto rule** — one or more confirmed census false merges rejects a setting, applied after §4.7 ranking and before the cluster audit, splits reported but never vetoing — **predeclared before any label existed**. Replaced the six named development patient IDs in the radius-expanded conflict table with counts, which carries the same evidential force without disclosing development-set membership. **Ambiguous marks** (§4.6.5): ratified as **eligible** for the association pool, since association is category-agnostic and excluding them would make it depend on category; they remain excluded from downstream benchmark labels, and a regression test asserts category cannot alter eligibility, pair identity, or stratum. **Reviewer governance** frozen (§4.6.6): one primary-reference reviewer over all 600; code-enforced seven-day washout for the 120-item intra-rater round with new identifiers and independent order; κ ≥ 0.80; a supported independent second reviewer on the same 120 items as an external audit that cannot adjudicate or change the threshold, with single-reviewer assessment recorded as a limitation if unavailable; and the binding terminology **"human-reviewed operational association reference"**, never "clinical ground truth" and never "radiologist". **Documentation gate rerun.** The 17-source full-text corpus was rebuilt from canonical lawful locations and the phrase-overlap/attribution audit rerun over **both complete documents**. Two quotations were corrected: a Guo et al. sentence had been quoted inexactly *and* generalised from MCE to ECE, and a TCIA erratum paraphrase had been presented inside quotation marks. Both are now exact and correctly scoped; neither claim they support changed. Zero unattributed prose overlap remains. Thresholds remain **proposed, not frozen**; **zero reference labels exist**. |
-| `0.1.0-draft` | 2026-08-30 | Initial draft, written from a direct survey of the original LIDC annotation XML. Committed as `6bd0f6b` to timestamp the protocol before any threshold was chosen. |
+| `0.1.0-draft` | 2026-08-30 | Initial draft, written from a direct survey of the original LIDC annotation XML. Recorded as `6bd0f6b` in the predecessor history before any threshold was chosen; this is an archival reference under the clarification above, not a reachable commit in the current canonical repository. |
 | `0.2.0-draft` | 2026-08-31 (rev. b) | Hash-pinned the annotation corpus (SHA-256 `644557a3…`, accessed 2026-08-31) and **withdrew the earlier "stale corpus" claim** — the current official archive is byte-identical to the copy already held; TCIA documented the missing-ratings omission rather than supplying the ratings, so it is permanent. Documented all **eight** errata (four newly found: site-inconsistent spiculation/lobulation, non-persistent reader order, invalid `internalStructure=5`, eight duplicate-timepoint patients). Corrected duplicate-file canonicalisation to **payload level**, which resolves four apparent content differences as cosmetic and leaves exactly one genuine case (resolved by erratum). Fixed the pilot reference set at **600 pairs** (240/180/180) with one pair per patient, all 600 scored for every setting, **no prefix cap**; added the class-count shortfall rule requiring a new protocol amendment rather than adaptive top-up. Added the **dual precision criterion** (observed ≥ 0.990 **and** Wilson 95% LB ≥ 0.950) so false-merge tolerance no longer varies with sample size. Made the 100-cluster audit use patients disjoint from the pair sample, one candidate per patient. Predeclared risk-coverage levels (90/80/70/50%), bootstrap (2,000) and permutation (10,000) replicates with a fixed shared seed, and the nested-prefix MC-dropout convergence scheme. Recorded prior-art and withdrawn-claim status. | 
 | `0.2.0-draft` | 2026-08-31 (rev. a) | Added TCIA DOI, licence, citation, and the four official errata, including the finding that the local corpus **predates the 2018-06-28 corrections** and must be re-downloaded. Resolved LIDC-IDRI-0101 supersession on the authority of TCIA's correction notice. Predeclared the primary uncertainty score, high-disagreement outcome, and derived hard label (§8), superseding the earlier "select on development data" language. Added full reproducible geometry definitions, constrained agglomerative complete linkage, zero-tolerance structural invariants, the frozen selection rule with a ≥150 predicted-positive floor and the 100-cluster audit, and the pilot's independence, indeterminate-label, and intra-rater (κ ≥ 0.80, 20% re-review) requirements (§4). Recorded reader-panel decisions with subject IDs (§5.1). Added closest-prior-art positioning (§2). Association thresholds remain **proposed, not frozen**. |

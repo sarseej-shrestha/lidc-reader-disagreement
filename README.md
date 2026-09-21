@@ -13,8 +13,8 @@ clinical utility is made anywhere in this project.
 
 ## Status
 
-**Milestone 1 — protocol freeze, in progress.** The study protocol is at `0.2.1-draft`: a
-timestamped pre-pilot design snapshot, **not** the final freeze.
+**Milestone 1 — pre-pilot readiness.** The study protocol is at `0.2.2-draft`, a procedural
+amendment clarifying review authorization and archival history. The final freeze is pending.
 
 | Gate | State |
 |---|---|
@@ -22,8 +22,13 @@ timestamped pre-pilot design snapshot, **not** the final freeze.
 | Association freeze — the §4.5 threshold grid | **OPEN.** Thresholds are proposed, not frozen |
 | Preprocessing / field-of-view freeze | **OPEN.** Declared, not frozen |
 
-**No association threshold has been selected. No reference labels exist. No model has been
-trained under this protocol. The locked test set has never been accessed.**
+**The association pilot is not complete. No association threshold has been selected. No
+reference labels or candidate dataset exist. No model has been trained and no evaluation
+results exist under this protocol. The locked test set has never been accessed.**
+
+The next scientific gate is **Gate 2A: authorization to begin reference review**, after human
+implementation review and the private readiness checks in `docs/protocol.md` §15.B. Passing
+synthetic tests does not authorize labelling, candidate construction, or training.
 
 Everything published here is *design and tooling* committed **before** any label was created —
 which is the property that makes the predeclared analysis credible.
@@ -77,14 +82,41 @@ The default test suite therefore validates the split *logic* against synthetic d
 no patient data at all; verifying a real manifest is a separate, explicit step:
 
 ```bash
-python -m pip install -r requirements.txt
-python tests/run_tests.py                     # 90 tests, no patient data required
+python3.13 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-lock.txt
+python -m pip check
+python tests/run_tests.py
+python scripts/pilot_ui_smoke.py
 
 # Optional integration gate, against your own local manifest.
 # Prints aggregate counts and hashes only, never subject identifiers,
 # and exits 2 rather than reporting success if the manifest is not supplied.
 python scripts/verify_private_split.py --manifest <path-to-your-private-manifest>
 
+```
+
+The validated local environment is macOS 15.6, arm64, Python 3.13.5, pip 25.1.1:
+NumPy 2.5.3, matplotlib 3.11.2, pylidc 0.2.3, and setuptools 80.10.2. The complete synthetic
+suite passes **90 tests, zero failures, zero skips**, and the interface smoke test passes
+**20 checks**. The lock was resolved with uv 0.12.17 from the tested environment versions and
+`requirements.txt`, with universal platform markers, then tested in a second clean virtual
+environment. These checks validate the synthetic tooling, not a real-data pipeline.
+`requirements.txt` retains the direct dependency requirements; the lock pins their resolved
+dependencies for Python 3.13. Other Python versions are not validated by this snapshot.
+Import `src.pylidc_compat` before `pylidc`, as the build script does.
+
+GitHub Actions runs on Ubuntu with Python 3.13.5: it installs the lock, checks dependencies,
+compiles tracked Python files, verifies imports, runs the full synthetic suite, and runs the
+separate interface smoke test. CI needs no private data and does **not** verify the real
+patient split, corpus, pilot manifests, or human implementation review. It downloads no LIDC
+data. Private data and vault material remain excluded from the public repository.
+
+The following manifest-builder command documents the tooling interface for a separately
+authorized preparation step; it is **not part of the readiness checks** and does not authorize
+rebuilding the frozen pilot manifests:
+
+```bash
 python scripts/build_pilot_manifest.py \
     --corpus <extracted-LIDC-XML-directory> \
     --out    <output-directory-outside-this-repository>

@@ -1,7 +1,7 @@
 # Direct dependencies of the code in this repository.
 #
 # The test suite (`python tests/run_tests.py`) needs only numpy and matplotlib; it uses a
-# minimal stdlib shim for the pytest API, so nothing else is required to run the 62 tests.
+# minimal stdlib shim for the pytest API, so pytest itself is not required.
 # `pylidc` is used ONLY by scripts/build_pilot_manifest.py, and only to read DICOM series
 # metadata (pixel spacing, slice thickness, patient id) — never to parse annotations and
 # never to supply a label. It pulls its own transitive dependencies.

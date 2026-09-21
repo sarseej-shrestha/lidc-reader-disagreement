@@ -1,0 +1,26 @@
+# Resolved with uv 0.12.17 from requirements.txt and the tested environment pins.
+# Resolution: Python 3.13, universal platform markers; no local package sources.
+# Validate changes in a fresh environment before updating this file.
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.65.0
+greenlet==3.5.6 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'
+imageio==2.37.4
+kiwisolver==1.5.1
+lazy-loader==0.5
+matplotlib==3.11.2
+networkx==3.6.1
+numpy==2.5.3
+packaging==26.3
+pillow==12.3.0
+pydicom==3.0.2
+pylidc==0.2.3
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+scikit-image==0.26.0
+scipy==1.18.1
+setuptools==80.10.2
+six==1.17.0
+sqlalchemy==2.0.54
+tifffile==2026.9.15
+typing-extensions==4.16.0
